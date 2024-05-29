@@ -1,48 +1,16 @@
-import { fetchPosts } from "@/services/postService";
-import { fetchUsers } from "@/services/userService";
-import { PostType, UserType } from "@/types/post.types";
+import useFetchPosts from "@/hooks/useFetchPosts";
+import useFetchUsers from "@/hooks/useFetchUsers";
 import Loading from "@/utils/Loading";
-import { useEffect, useState } from "react";
 import Post from "../Post/Post";
 
 export default function TimelineScreen() {
-    const [posts, setPosts] = useState<PostType[]>([]);
-    const [users, setUsers] = useState<UserType[]>([]);
-    const [error, setError] = useState(false);
-    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-    const [isLoadingUsers, setIsLoadingUsers] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const postsData = await fetchPosts();
-                setPosts(postsData);
-                setIsLoadingPosts(false);
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-                setError(true);
-                setIsLoadingPosts(false);
-            }
-
-            try {
-                const usersData = await fetchUsers();
-                setUsers(usersData);
-                setIsLoadingUsers(false);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                setError(true);
-                setIsLoadingUsers(false);
-            }
-        };
-
-        fetchData();
-
-    }, []);
+    const { posts, error: errorPosts, isLoadingPosts } = useFetchPosts();
+    const { users, error: errorUsers, isLoadingUsers } = useFetchUsers();
 
     let content;
     if (isLoadingPosts || isLoadingUsers) {
         content = <Loading />
-    } else if (error) {
+    } else if (errorPosts || errorUsers) {
         content = <span className='flex justify-center items-center'>Error fetching posts</span>
     } else if (!isLoadingPosts && !isLoadingUsers && posts.length > 0 && users.length > 0) {
         content = posts.map((post, index) => {
