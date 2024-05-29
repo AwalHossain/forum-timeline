@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { fetchUserComments } from '@/services/services';
-import { CommentType } from '../../types/post.types';
+import usePostComments from '@/hooks/useComments';
 import Comment from '../Comment/Comment';
 
 
@@ -14,22 +13,34 @@ interface PostProps {
 
 export default function Post({ title, body, userName, postId }: PostProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [comments, setComments] = useState<CommentType[]>([]);
-    const fetchComments = async () => {
-        try {
-            const commentsData = await fetchUserComments(postId);
-            setComments(commentsData);
-        } catch (error) {
-            console.error('Error fetching comments:', error);
-        }
-    };
+
+
+    const { comments, error, isLoadingComments } = usePostComments(postId, isExpanded);
 
     const toggleExpand = async () => {
         setIsExpanded(!isExpanded);
-        if (!isExpanded && comments.length === 0) {
-            await fetchComments();
-        }
+
     };
+
+
+    let content;
+    if (!isLoadingComments && comments.length > 0) {
+        content = comments.map((comment) => (
+            <Comment
+                key={comment.id}
+                name={comment.name}
+                email={comment.email}
+                body={comment.body}
+            />
+        ))
+    } else if (isLoadingComments) {
+        content = <span className='flex justify-center items-center'>Loading....</span>
+    } else if (error) {
+        content = <span className='flex justify-center items-center'>Error fetching comments</span>
+    } else {
+        content = <span className='flex justify-center items-center'>No comments found</span>
+    }
+
 
     return (
         <div className={` bg-white p-4 rounded-lg shadow-md mb-4`}>
@@ -42,20 +53,24 @@ export default function Post({ title, body, userName, postId }: PostProps) {
                     {isExpanded ? 'Collapse' : 'Expand'}
                 </button>
             </div>
-            <p className="text-gray-600 mb-2">By {userName}</p>
+            <div className="text-gray-600 mb-2 flex items-center">
+                <div className="bg-gray-400 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-2">
+                    {userName.charAt(0).toUpperCase()}
+                </div>
+                <span className='inline-block font-bold'>
+                    {userName}
+                </span>
+            </div>
             <p>{body}</p>
             {isExpanded && (
-                <div className="mt-4">
-                    <h3 className="text-lg font-bold mb-2">Comments</h3>
-                    {comments.map((comment) => (
-                        <Comment
-                            key={comment.id}
-                            name={comment.name}
-                            email={comment.email}
-                            body={comment.body}
-                        />
-                    ))}
-                </div>
+                <>
+                    <h3 className="text-lg font-bold my-2">Comments</h3>
+                    <div className="mt-4 px-8">
+                        {
+                            content
+                        }
+                    </div>
+                </>
             )}
         </div>
     );
