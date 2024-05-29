@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { fetchUserComments } from '@/services/services';
+import { CommentType } from '../../types/post.types';
 import Comment from '../Comment/Comment';
-import { CommentType } from '../types/post.types';
 
 
 interface PostProps {
@@ -14,21 +15,20 @@ interface PostProps {
 export default function Post({ title, body, userName, postId }: PostProps) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [comments, setComments] = useState<CommentType[]>([]);
+    const fetchComments = async () => {
+        try {
+            const commentsData = await fetchUserComments(postId);
+            setComments(commentsData);
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
+    };
 
-    useEffect(() => {
-        // Fetch comments for the post when the component mounts
-        // Replace this with your actual API call to fetch comments
-        const fetchComments = async () => {
-            const response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`);
-            const data = await response.json();
-            setComments(data);
-        };
-
-        fetchComments();
-    }, [postId]);
-
-    const toggleExpand = () => {
+    const toggleExpand = async () => {
         setIsExpanded(!isExpanded);
+        if (!isExpanded && comments.length === 0) {
+            await fetchComments();
+        }
     };
 
     return (
