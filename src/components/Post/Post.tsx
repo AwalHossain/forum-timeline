@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import usePostComments from '@/hooks/useComments';
+import usePostComments from '@/hooks/useFetchComments';
 import Comment from '../Comment/Comment';
 
 
