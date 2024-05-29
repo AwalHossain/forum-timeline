@@ -1,11 +1,14 @@
-import { fetchPosts, fetchUsers } from "@/services/services";
+import { fetchPosts } from "@/services/postService";
+import { fetchUsers } from "@/services/userService";
 import { PostType, UserType } from "@/types/post.types";
+import Loading from "@/utils/Loading";
 import { useEffect, useState } from "react";
 import Post from "../Post/Post";
 
 export default function TimelineScreen() {
     const [posts, setPosts] = useState<PostType[]>([]);
     const [users, setUsers] = useState<UserType[]>([]);
+    const [error, setError] = useState(false);
     const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [isLoadingUsers, setIsLoadingUsers] = useState(true);
 
@@ -17,6 +20,7 @@ export default function TimelineScreen() {
                 setIsLoadingPosts(false);
             } catch (error) {
                 console.error('Error fetching posts:', error);
+                setError(true);
                 setIsLoadingPosts(false);
             }
 
@@ -26,6 +30,7 @@ export default function TimelineScreen() {
                 setIsLoadingUsers(false);
             } catch (error) {
                 console.error('Error fetching users:', error);
+                setError(true);
                 setIsLoadingUsers(false);
             }
         };
@@ -34,25 +39,28 @@ export default function TimelineScreen() {
 
     }, []);
 
+    let content;
+    if (isLoadingPosts || isLoadingUsers) {
+        content = <Loading />
+    } else if (error) {
+        content = <span className='flex justify-center items-center'>Error fetching posts</span>
+    } else if (!isLoadingPosts && !isLoadingUsers && posts.length > 0 && users.length > 0) {
+        content = posts.map((post, index) => {
+            const user = users.find((user) => user.id === post.userId);
+            return (<Post key={index} title={post.title} userName={user?.username || "Anynomous"} body={post.body} postId={post.id} />)
+        })
+    } else {
+        content = <span className='flex justify-center items-center'>No posts found</span>
+    }
+
+
     return (
         <div className={` bg-gray-100 p-4`}>
             <h1 className="text-2xl font-bold mb-4">Timeline</h1>
             {/* Render posts here */}
-            {isLoadingPosts || isLoadingUsers ? (
-                <p className="w-screen h-screen flex items-center justify-center">
-                    {/* loading svg */}
-                    <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Processing...
-                </p>
-            ) : (
-                posts.map((post, index) => {
-                    const user = users.find((user) => user.id === post.userId);
-                    return (<Post key={index} title={post.title} userName={user?.username || "Anynomous"} body={post.body} postId={post.id} />)
-                })
-            )}
+            {
+                content
+            }
         </div>
     )
 }
