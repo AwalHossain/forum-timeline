@@ -1,4 +1,3 @@
-
 import useInfiniteScroll from "@/hooks/useInfinityScroll";
 import { MAX_POST_LIMIT, fetchPosts } from "@/services/postService";
 import { fetchUsers } from "@/services/userService";
@@ -6,6 +5,7 @@ import Loading from "@/utils/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import Post from "../Elements/Post";
+
 
 export default function TimelineScreen() {
     const {
@@ -22,6 +22,7 @@ export default function TimelineScreen() {
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.length === MAX_POST_LIMIT ? allPages.length + 1 : undefined;
         },
+        refetchOnWindowFocus: false,
     });
 
     const {
@@ -38,6 +39,7 @@ export default function TimelineScreen() {
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.length === MAX_POST_LIMIT ? allPages.length + 1 : undefined;
         },
+        refetchOnWindowFocus: false,
     });
 
     const lastPostElementRef = useInfiniteScroll({
@@ -78,8 +80,8 @@ export default function TimelineScreen() {
             const isLastUserElement = index === users.length - 1;
 
             return (
-                <div key={index}>
-                    <div ref={isLastPostElement ? lastPostElementRef : null}>
+                <div key={index} className="bg-gray-50 ">
+                    <div ref={isLastPostElement ? lastPostElementRef : null} >
                         <Post
                             title={post.title}
                             userName={user?.username || "Anonymous"}
@@ -96,9 +98,15 @@ export default function TimelineScreen() {
     }
 
     return (
-        <div className={`bg-gray-100 p-4`}>
-            <h1 className="text-2xl font-bold mb-4">Timeline</h1>
-            <div>{content}</div>
+        <div className=" min-h-screen ">
+            <div className="max-w-3xl mx-auto py-8">
+                <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+                    Timeline
+                </h1>
+                <div className=" p-2">
+                    {content}
+                </div>
+            </div>
         </div>
     );
 }
