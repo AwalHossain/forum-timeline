@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import usePostComments from '@/hooks/useFetchComments';
-import Comment from '../Comment/Comment';
+import Comment from './Comment';
 
 
 interface PostProps {
