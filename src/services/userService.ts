@@ -3,11 +3,11 @@ import { apiService } from "./apiService";
 
 
 
-export const fetchUsers = async () => {
+export const fetchUsers = async ({pageParam}:{pageParam:number}) => {
 
   
     try {
-      const response = await apiService.get<UserType[]>(`/users`);
+      const response = await apiService.get<UserType[]>(`/users?_page=${pageParam}&_limit=10`);
 
       return response;
     } catch (error) {
