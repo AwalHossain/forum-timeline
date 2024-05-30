@@ -5,7 +5,7 @@ import { fetchUsers } from "@/services/userService";
 import Loading from "@/utils/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import Post from "../Post/Post";
+import Post from "../Elements/Post";
 
 export default function TimelineScreen() {
     const {
