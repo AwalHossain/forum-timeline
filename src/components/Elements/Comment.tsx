@@ -1,5 +1,3 @@
-
-
 interface CommentProps {
     name: string;
     email: string;
