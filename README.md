@@ -12,15 +12,15 @@ The Forum Timeline App is a web application built with React, TypeScript, and va
 5. Clean and user-friendly UI
 
 ## overview 
-
-This frontend normally focused on the general problem that faced by microservice architecture, which is the data consistency. 
-
-So i've used some of the following patterns to solve this problem:
+This project showcases best practices in code organization, cleanliness, problem-solving skills, proper API integration, and a clean and user-friendly UI.
+It normally focused on the general problem that faced by microservice architecture, which is the data consistency. So i've used some of the following coding style and pattern to solve this problem:
 
 ## Features
 
 - **Data Aggregation and Caching**: By using Tanstack React Query, this frontend application can efficiently fetch and cache data from multiple microservices, reducing the load on the backend services and potentially improving overall performance.
 - **Infinite Scrolling**: The application implements infinite scrolling functionality, allowing users to load more posts as they scroll down the page.
+- **Custom Hooks**: Deployed React hooks, introducing reusability in stateful behavior within functional components for efficient use of React’s native state
+management and life-cycle features in order to alter state within the application upon designated user actions
 - **API Composition**: This application demonstrates how to combine data from multiple microservices (posts and users) and present it in a unified and coherent way to the user
 - **Lazy Loading and Code Splitting**: Implement lazy loading and code splitting techniques to load UI components and data only when needed, reducing the initial load time and improving performance
 - **Custom Hooks**: The project utilizes custom hooks for better code organization and reusability, such as `useFetchPosts`, `useFetchComments`, `useFetchUsers`, and `useInfiniteScroll`.
