@@ -1,7 +1,7 @@
 
 export default function Loading() {
     return (
-        <div className="w-screen h-screen flex items-center justify-center">
+        <div className="h-screen flex items-center justify-center">
             {/* loading svg */}
             <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"></circle>
