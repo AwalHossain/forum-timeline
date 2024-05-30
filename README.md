@@ -15,6 +15,9 @@ The Forum Timeline App is a web application built with React, TypeScript, and va
 This project showcases best practices in code organization, cleanliness, problem-solving skills, proper API integration, and a clean and user-friendly UI.
 It normally focused on the general problem that faced by microservice architecture, which is the data consistency. So i've used some of the following coding style and pattern to solve this problem:
 
+![image](https://github.com/AwalHossain/forum-timeline/assets/80216813/66bbfc0e-c3e3-4739-b122-e0a78f7f1da7)
+
+
 ## Features
 
 - **Data Aggregation and Caching**: By using Tanstack React Query, this frontend application can efficiently fetch and cache data from multiple microservices, reducing the load on the backend services and potentially improving overall performance.
