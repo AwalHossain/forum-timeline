@@ -43,15 +43,9 @@ export default function Post({ title, body, userName, postId }: PostProps) {
 
 
     return (
-        <div className={` bg-white p-4 rounded-lg shadow-md mb-4`}>
+        <div className={` p-4 rounded-lg shadow-md mb-4`}>
             <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-bold">{title}</h2>
-                <button
-                    className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                    onClick={toggleExpand}
-                >
-                    {isExpanded ? 'Collapse' : 'Expand'}
-                </button>
+                <h2 className="text-lg font-bold hover:underline cursor-pointer" onClick={toggleExpand} >{title}</h2>
             </div>
             <div className="text-gray-600 mb-2 flex items-center">
                 <div className="bg-gray-400 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-2">
@@ -62,6 +56,11 @@ export default function Post({ title, body, userName, postId }: PostProps) {
                 </span>
             </div>
             <p>{body}</p>
+            <div className="flex justify-end">
+                <button onClick={toggleExpand} className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg">
+                    {isExpanded ? 'Hide' : 'Comments'}
+                </button>
+            </div>
             {isExpanded && (
                 <>
                     <h3 className="text-lg font-bold my-2">Comments</h3>
