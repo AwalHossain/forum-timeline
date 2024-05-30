@@ -80,8 +80,8 @@ export default function TimelineScreen() {
             const isLastUserElement = index === users.length - 1;
 
             return (
-                <div key={index} className="bg-gray-50 ">
-                    <div ref={isLastPostElement ? lastPostElementRef : null} >
+                <div key={index} className="bg-gray-100 rounded-md ">
+                    <div ref={isLastPostElement ? lastPostElementRef : null}>
                         <Post
                             title={post.title}
                             userName={user?.username || "Anonymous"}
@@ -103,7 +103,7 @@ export default function TimelineScreen() {
                 <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                     Timeline
                 </h1>
-                <div className=" p-2">
+                <div className="">
                     {content}
                 </div>
             </div>
