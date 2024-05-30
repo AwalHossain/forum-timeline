@@ -13,7 +13,7 @@ const useFetchPosts = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const postsData = await fetchPosts();
+                const postsData = await fetchPosts({pageParam:1});
                 setPosts(postsData);
                 setIsLoadingPosts(false);
             } catch (error) {
