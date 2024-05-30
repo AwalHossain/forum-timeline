@@ -1,48 +1,26 @@
 import useFetchUsers from "@/hooks/useFetchUsers";
-import { fetchPosts } from "@/services/postService";
+import useInfiniteScroll from "@/hooks/useInfinityScroll";
+import { MAX_POST_LIMIT, fetchPosts } from "@/services/postService";
 import Loading from "@/utils/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import Post from "../Post/Post";
 
-const POSTS_PER_PAGE = 10;
+
 
 export default function TimelineScreen() {
     // const { posts, error: errorPosts, isLoadingPosts } = useFetchPosts();
     const { users, error: errorUsers, isLoadingUsers } = useFetchUsers();
-    const observer = useRef<IntersectionObserver>();
 
     const { data, error, fetchNextPage, hasNextPage, isFetching, isLoading } = useInfiniteQuery({
         queryKey: ['posts'],
         queryFn: ({ pageParam = 1 }) => fetchPosts({ pageParam }),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
-            return lastPage.length === POSTS_PER_PAGE ? allPages.length + 1 : undefined;
+            return lastPage.length === MAX_POST_LIMIT ? allPages.length + 1 : undefined;
         },
     });
-    const lastElementRef = useCallback(
-        (node: HTMLDivElement) => {
-            if (isLoading) return;
-            if (observer.current) observer.current.disconnect();
-
-            observer.current = new IntersectionObserver(
-                (entries) => {
-                    if (entries[0].isIntersecting && hasNextPage && !isFetching) {
-                        console.log('visible checking');
-                        fetchNextPage();
-                    }
-                },
-                {
-                    root: null, // Use the viewport as the root
-                    rootMargin: '0px', // Margin around the root
-                    threshold: 1, // Trigger when 100% of the target is visible
-                }
-            );
-
-            if (node) observer.current.observe(node);
-        },
-        [fetchNextPage, hasNextPage, isFetching, isLoading]
-    );
+    const lastElementRef = useInfiniteScroll({ isLoading, fetchNextPage, hasNextPage, isFetching })
     const posts = useMemo(() => {
         return data?.pages.reduce((acc, page) => {
             return [...acc, ...page];
