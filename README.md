@@ -1,4 +1,7 @@
-# Forum timeline App
+# Forum timeline App 
+
+[![Live Preview](https://img.shields.io/badge/live%20preview-%2300C7B7?style=for-the-badge&logo=netlify)](https://forum-timeline-phi.vercel.app)
+
 
 The Forum Timeline App is a web application built with React, TypeScript, and various libraries and hooks. The primary purpose of this project is to showcase the following best practices:
 
