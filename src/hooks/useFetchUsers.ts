@@ -14,7 +14,7 @@ const useFetchUsers = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const postUser = await fetchUsers();
+                const postUser = await fetchUsers({pageParam:1});
                 setUser(postUser);
                 setIsLoadingUsers(false);
             } catch (error) {
