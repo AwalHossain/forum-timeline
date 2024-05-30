@@ -43,7 +43,7 @@ export default function Post({ title, body, userName, postId }: PostProps) {
 
 
     return (
-        <div className={` p-4 rounded-lg shadow-md mb-4`}>
+        <div className={` p-4 rounded-md shadow-md mb-4`}>
             <div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-bold hover:underline cursor-pointer" onClick={toggleExpand} >{title}</h2>
             </div>
